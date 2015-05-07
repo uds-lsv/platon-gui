@@ -54,13 +54,13 @@ import de.uds.lsv.platon.DialogClient
 import de.uds.lsv.platon.DialogWorld
 import de.uds.lsv.platon.Platon
 import de.uds.lsv.platon.action.IOType
+import de.uds.lsv.platon.config.Config
 import de.uds.lsv.platon.gui.ClientPanel.TextInputListener
 import de.uds.lsv.platon.gui.asr.ASR
 import de.uds.lsv.platon.gui.config.InjectionModule
 import de.uds.lsv.platon.gui.tts.TTS
 import de.uds.lsv.platon.session.DialogSession
 import de.uds.lsv.platon.session.User
-import de.uds.lsv.sonarsilence.config.Config
 import de.uds.lsv.util.PrimitiveUtil
 
 @TypeChecked
@@ -622,6 +622,9 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 				tabbedPane.setSelectedIndex(CONFIG_TAB)
 				return;
 			}
+			if (languageList.isEmpty()) {
+				throw new RuntimeException("You have to add at least one user!");
+			}
 			
 			List<User> users = (0..(languageList.size()-1)).collect {
 				int i ->
@@ -778,8 +781,9 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 	}
 	
 	public void setUsers(List<String> users) {
-		users.clear();
-		users.addAll(users);
+		languageList.clear();
+		languageList.addAll(users);
+		languageTableModel.fireTableDataChanged();
 	}
 	
 	public void setScript(String script) {
