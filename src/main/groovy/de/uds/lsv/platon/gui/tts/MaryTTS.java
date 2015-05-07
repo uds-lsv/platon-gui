@@ -15,11 +15,13 @@ import marytts.util.data.audio.AudioPlayer;
 @Singleton
 public class MaryTTS implements TTS {
 	private final MaryInterface marytts;
-
-	@Inject
+	
 	public MaryTTS() throws MaryConfigurationException {
 		marytts = new LocalMaryInterface();
 		Set<String> voices = marytts.getAvailableVoices();
+		if (voices.isEmpty()) {
+			throw new RuntimeException("No TTS voices found!");
+		}
 		marytts.setVoice(voices.iterator().next());
 	}
 	
