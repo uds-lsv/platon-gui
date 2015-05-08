@@ -2,7 +2,6 @@ package de.uds.lsv.platon.gui.tts;
 
 import java.util.Set;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 
@@ -10,6 +9,8 @@ import marytts.LocalMaryInterface;
 import marytts.MaryInterface;
 import marytts.exceptions.MaryConfigurationException;
 import marytts.exceptions.SynthesisException;
+import marytts.modules.synthesis.Voice;
+import marytts.server.MaryProperties;
 import marytts.util.data.audio.AudioPlayer;
 
 @Singleton
@@ -20,9 +21,24 @@ public class MaryTTS implements TTS {
 		marytts = new LocalMaryInterface();
 		Set<String> voices = marytts.getAvailableVoices();
 		if (voices.isEmpty()) {
+			// Try marytts.htsengine.HMMVoice
+			//marytts.htsengine.HMMVoice x;
 			throw new RuntimeException("No TTS voices found!");
 		}
-		marytts.setVoice(voices.iterator().next());
+		
+		String voiceName = voices.iterator().next();
+		System.out.println(
+			Voice.getVoice(voiceName)
+		);
+		System.out.println(
+			Voice.getVoice(voiceName).getClass()
+		);
+		
+		System.out.println(MaryProperties.synthesizerClasses());
+		
+		MaryProperties.getList("hmm.voices.list");
+		
+		marytts.setVoice(voiceName);
 	}
 	
 	@Override
@@ -38,5 +54,10 @@ public class MaryTTS implements TTS {
 		catch (SynthesisException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static void main(String[] args) throws MaryConfigurationException {
+		MaryTTS tts = new MaryTTS();
+		tts.say("Test");
 	}
 }

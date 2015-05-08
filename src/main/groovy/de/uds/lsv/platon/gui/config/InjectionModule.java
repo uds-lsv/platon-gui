@@ -22,16 +22,16 @@ public class InjectionModule extends AbstractModule {
 		return injector;
 	}
 	
-	@Override 
+	@Override
 	protected void configure() {
 		// ASR
-		bind(ASR.class).to(SphinxASR.class);
 		bind(Configuration.class).toProvider(new Provider<Configuration>() {
 			@Override
 			public Configuration get() {
 				return SphinxASR.getDefaultConfig();
 			}
 		});
+		bind(ASR.class).to(SphinxASR.class);
 		
 		// TTS
 		bind(TTS.class).to(MaryTTS.class);

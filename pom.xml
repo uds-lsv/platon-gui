@@ -18,6 +18,14 @@
 			<name>project</name>
 			<url>file:${project.basedir}/repository</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>libs-release</name>
+			<url>http://oss.jfrog.org/artifactory/libs-release</url>
+		</repository>
 	</repositories>
 
 	<build>
