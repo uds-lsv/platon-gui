@@ -670,10 +670,7 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 				dialogEngineServerThread.start();
 			}*/
 			
-			int tab = WORLD_SERVER_TAB;
-			if (dialogWorldClass == null) {
-				tab = FIRST_CLIENT_TAB;
-			}
+			int tab = FIRST_CLIENT_TAB;
 			if (SwingUtilities.isEventDispatchThread()) {
 				tabbedPane.setSelectedIndex(tab);
 			} else {
