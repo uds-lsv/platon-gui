@@ -19,12 +19,28 @@
 			<url>file:${project.basedir}/repository</url>
 		</repository>
 		<repository>
+			<id>mgropp-groovy-util</id>
+			<url>https://raw.github.com/mgropp/groovy-util/mvn-repo/</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
 			</snapshots>
+		</repository>
+		<repository>
+			<id>uds-lsv-platon</id>
+			<url>https://raw.github.com/uds-lsv/platon/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>central</id>
 			<name>libs-release</name>
 			<url>http://oss.jfrog.org/artifactory/libs-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -125,7 +141,12 @@
 		<dependency>
 			<groupId>de.uds.lsv.dialog</groupId>
 			<artifactId>platon</artifactId>
-			<version>(0.0.0,)</version>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.martin-gropp</groupId>
+			<artifactId>groovy-util</artifactId>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>

@@ -36,7 +36,7 @@ import javax.swing.text.StyledDocument
 
 import de.uds.lsv.platon.gui.asr.ASR
 import de.uds.lsv.platon.session.User
-import de.uds.lsv.util.IdleManager
+import de.martingropp.util.IdleManager
 
 
 @TypeChecked
@@ -334,7 +334,13 @@ public class ClientPanel extends JPanel {
 		catch (BadLocationException e) {
 			throw new RuntimeException(e);
 		}
-		textPane.setCaretPosition(textPane.getText().length());
+		
+		// Stupid Windows... :/
+		String s = textPane.getText();
+		if (s.endsWith("\r\n")) {
+			s = s.substring(0, text.length()-1);
+		}
+		textPane.setCaretPosition(s.length());
 	}
 	
 	public void addText(String text, SimpleAttributeSet attributes) {
