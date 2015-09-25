@@ -334,6 +334,14 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 		return textField;
 	}
 
+	private JTextField addPlainConfigItem(String name, JComponent parent, String labelText) {
+		JTextField textField = createConfigTextField(name, parent, labelText);
+		
+		parent.add(new JPanel(), buttonConstraints);
+		
+		return textField;
+	}
+	
 	private JTextField addFileConfigItem(String name, JComponent parent, String labelText, FileFilter fileFilter, Closure changedClosure=null) {
 		JTextField textField = createConfigTextField(name, parent, labelText);
 		
@@ -510,7 +518,9 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 				dialogEngineConfig.dialogScript = new File(filename).toURI().toURL();
 			}
 		);
-		dialogWorldInput = addFileConfigItem("worldserver", configPanel, "<html>World server class:<br><small>(leave empty to use no server)</small></html>", dialogWorldFilter);
+		//dialogWorldInput = addFileConfigItem("worldserver", configPanel, "<html>World class:<br><small>(leave empty to use none)</small></html>", dialogWorldFilter);
+		dialogWorldInput = addPlainConfigItem("worldserver", configPanel, "<html>World class:<br><small>(leave empty to use none)</small></html>");
+
 		
 		addUserConfig(configPanel);
 		
