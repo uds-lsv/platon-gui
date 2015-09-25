@@ -34,14 +34,6 @@
 				<updatePolicy>always</updatePolicy>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>central</id>
-			<name>libs-release</name>
-			<url>http://oss.jfrog.org/artifactory/libs-release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 	
 	<distributionManagement>
@@ -291,7 +283,7 @@
 		</dependency>
 		
 		<!-- TTS: MaryTTS -->
-		<dependency>
+		<!--<dependency>
 			<groupId>de.dfki.mary</groupId>
 			<artifactId>marytts-runtime</artifactId>
 			<version>[5,6.0)</version>
@@ -306,6 +298,7 @@
 			<artifactId>voice-cmu-slt-hsmm</artifactId>
 			<version>[5,6.0)</version>
 		</dependency>
+		-->
 		
 		<!-- ASR: Sphinx -->
 		<!--

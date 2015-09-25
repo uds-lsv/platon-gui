@@ -6,7 +6,7 @@ import com.google.inject.Injector;
 
 import de.uds.lsv.platon.gui.asr.ASR;
 import de.uds.lsv.platon.gui.asr.DummyASR;
-import de.uds.lsv.platon.gui.tts.MaryTTS;
+import de.uds.lsv.platon.gui.tts.DummyTTS;
 import de.uds.lsv.platon.gui.tts.TTS;
 
 public class DefaultInjectionModule extends AbstractModule {
@@ -26,6 +26,6 @@ public class DefaultInjectionModule extends AbstractModule {
 		bind(ASR.class).to(DummyASR.class);
 		
 		// TTS
-		bind(TTS.class).to(MaryTTS.class);
+		bind(TTS.class).to(DummyTTS.class);
 	}
 }
