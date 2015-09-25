@@ -15,7 +15,6 @@ import java.util.prefs.Preferences
 import javax.swing.AbstractAction
 import javax.swing.Action
 import javax.swing.BorderFactory
-import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JComponent
 import javax.swing.JFileChooser
@@ -34,13 +33,14 @@ import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
 import javax.swing.text.StyledDocument
 
-import de.uds.lsv.platon.gui.asr.ASR
-import de.uds.lsv.platon.session.User
 import de.martingropp.util.IdleManager
+import de.uds.lsv.platon.gui.asr.ASR
+import de.uds.lsv.platon.gui.asr.ASRListener
+import de.uds.lsv.platon.session.User
 
 
 @TypeChecked
-public class ClientPanel extends JPanel {
+public class ClientPanel extends JPanel implements ASRListener {
 	private static final long serialVersionUID = -4879445778545380477L;
 	
 	public static interface TextInputListener {
@@ -88,6 +88,7 @@ public class ClientPanel extends JPanel {
 		// ASR
 		this.asr = asr;
 		this.asrExecutor = Executors.newSingleThreadExecutor();
+		asr.startRecognizer(this);
 		
 		// GUI
 		bulkInputPreferencesKey = String.format(
@@ -253,64 +254,6 @@ public class ClientPanel extends JPanel {
 		
 		panel.add(inputPanel, BorderLayout.SOUTH);
 		
-		URL iconUrl = getClass().getClassLoader().getResource("asr.png");
-		ImageIcon asrIcon = null;
-		if (iconUrl != null) {
-			asrIcon = new ImageIcon(iconUrl, "Speech Input");
-		}
-		
-		iconUrl = getClass().getClassLoader().getResource("asr-active.png");
-		ImageIcon asrActiveIcon = null;
-		if (iconUrl != null) {
-			asrActiveIcon = new ImageIcon(iconUrl, "Speech Input Active");
-		}
-		
-		asrAction = new AbstractAction("Speech Input", asrIcon) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				asrButton.setAction(abortAsrAction);
-				asrAction.setEnabled(false);
-				asrFuture = asrExecutor.submit({
-					try {
-						String text = ClientPanel.this.asr.recognizeOnce();
-						ClientPanel.this.appendLine(outputPane, text, inputAttributes);
-						
-						for (TextInputListener listener : textInputListeners) {
-							listener.textEntered(user, text);
-						}
-					}
-					finally {
-						asrFuture = null;
-						asrAction.setEnabled(true);
-						asrButton.setAction(asrAction);
-						asrButton.setText("");
-					}
-				});
-			}
-		};
-	
-		abortAsrAction = new AbstractAction("Cancel Speech Input", asrActiveIcon) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (asrFuture != null) {
-					asrFuture.cancel(true);
-					asrFuture = null;
-				}
-				
-				asrAction.setEnabled(true);
-				asrButton.setAction(asrAction);
-				asrButton.setText("");
-			}
-		};
-	
-		asrButton = new JButton(asrAction);
-		asrButton.setText("");
-		inputPanel.add(asrButton, BorderLayout.WEST);
-				
 		JSplitPane splitPane = new JSplitPane(
 			JSplitPane.VERTICAL_SPLIT,
 			new JScrollPane(outputPane),
@@ -324,6 +267,15 @@ public class ClientPanel extends JPanel {
 		
 		panel.add(splitPane, BorderLayout.CENTER);
 		panel.add(inputPanel, BorderLayout.SOUTH);
+	}
+	
+	@Override
+	public void speechRecognized(String text) {
+		addText(text, inputAttributes);
+		
+		for (TextInputListener listener : textInputListeners) {
+			listener.textEntered(user, text);
+		}
 	}
 	
 	private void appendLine(JTextPane textPane, String text, SimpleAttributeSet attributes) {

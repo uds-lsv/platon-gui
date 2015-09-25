@@ -66,6 +66,9 @@ import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
 import javax.swing.text.StyledDocument
 
+import com.google.inject.Injector
+
+import de.martingropp.util.PrimitiveUtil
 import de.uds.lsv.platon.DialogClient
 import de.uds.lsv.platon.DialogWorld
 import de.uds.lsv.platon.Platon
@@ -73,11 +76,10 @@ import de.uds.lsv.platon.action.IOType
 import de.uds.lsv.platon.config.Config
 import de.uds.lsv.platon.gui.ClientPanel.TextInputListener
 import de.uds.lsv.platon.gui.asr.ASR
-import de.uds.lsv.platon.gui.config.InjectionModule
+import de.uds.lsv.platon.gui.config.DefaultInjectionModule
 import de.uds.lsv.platon.gui.tts.TTS
 import de.uds.lsv.platon.session.DialogSession
 import de.uds.lsv.platon.session.User
-import de.martingropp.util.PrimitiveUtil
 
 @TypeChecked
 public class ScriptDebugger extends JFrame implements DialogClient, TextInputListener {
@@ -818,7 +820,11 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 	}
 	
 	public static void run(String script, List<String> users, String dialogWorldClass, boolean startNow) {
-		ScriptDebugger scriptDebugger = InjectionModule.getInjector().getInstance(ScriptDebugger.class);
+		run(DefaultInjectionModule.getInjector(), script, users, dialogWorldClass, startNow);
+	}
+	
+	public static void run(Injector injector, String script, List<String> users, String dialogWorldClass, boolean startNow) {
+		ScriptDebugger scriptDebugger = injector.getInstance(ScriptDebugger.class);
 		scriptDebugger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		scriptDebugger.setLocationRelativeTo(null);
 		

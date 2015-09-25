@@ -1,5 +1,6 @@
 package de.uds.lsv.platon.gui.asr;
 
 public interface ASR {
-	String recognizeOnce();
+	void startRecognizer(ASRListener listener) throws Exception;
+	void stopRecognizer() throws InterruptedException;
 }

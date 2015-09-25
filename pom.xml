@@ -308,6 +308,7 @@
 		</dependency>
 		
 		<!-- ASR: Sphinx -->
+		<!--
 		<dependency>
 			<groupId>edu.cmu.sphinx</groupId>
 			<artifactId>sphinx4-core</artifactId>
@@ -318,6 +319,7 @@
 			<artifactId>sphinx4-data</artifactId>
 			<version>[0.9,2)</version>
 		</dependency>
+		-->
 	</dependencies>
 
 	<reporting>
