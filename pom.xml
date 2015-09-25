@@ -43,7 +43,15 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
+	
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -55,24 +63,24 @@
 						<id>add-source</id>
 						<phase>generate-sources</phase>
 						<goals>
-						  <goal>add-source</goal>
+							<goal>add-source</goal>
 						</goals>
 						<configuration>
-						  <sources>
-							<source>src/main/groovy</source>
-						  </sources> 
+							<sources>
+								<source>src/main/groovy</source>
+							</sources> 
 						</configuration>
 					  </execution>
 					  <execution>
 						<id>add-test-source</id>
 						<phase>generate-test-sources</phase>
 						<goals>
-						  <goal>add-test-source</goal>
+							<goal>add-test-source</goal>
 						</goals>
 						<configuration>
-						  <sources>
-							<source>src/test/groovy</source>
-						  </sources>
+							<sources>
+								<source>src/test/groovy</source>
+							</sources>
 						</configuration>
 					</execution>    
 				</executions>
@@ -119,7 +127,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>de.uds.lsv.sonarsilence.rpc.DialogEngineServer</mainClass>
+							<mainClass>de.uds.lsv.platon.gui.ScriptDebugger</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
@@ -131,6 +139,32 @@
 						<goals>
 							<goal>single</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Maven artifacts for ${project.version}</message>
+					<noJekyll>true</noJekyll>
+					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+					<branch>refs/heads/mvn-repo</branch>
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<repositoryName>platon-gui</repositoryName>
+					<repositoryOwner>uds-lsv</repositoryOwner>
+					<server>github</server>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -250,7 +284,13 @@
 			<artifactId>guice</artifactId>
 			<version>4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.2</version>
+		</dependency>
 		
+		<!-- TTS: MaryTTS -->
 		<dependency>
 			<groupId>de.dfki.mary</groupId>
 			<artifactId>marytts-runtime</artifactId>
@@ -267,6 +307,7 @@
 			<version>[5,6.0)</version>
 		</dependency>
 		
+		<!-- ASR: Sphinx -->
 		<dependency>
 			<groupId>edu.cmu.sphinx</groupId>
 			<artifactId>sphinx4-core</artifactId>
@@ -276,11 +317,6 @@
 			<groupId>edu.cmu.sphinx</groupId>
 			<artifactId>sphinx4-data</artifactId>
 			<version>[0.9,2)</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-cli</groupId>
-			<artifactId>commons-cli</artifactId>
-			<version>1.2</version>
 		</dependency>
 	</dependencies>
 
