@@ -259,8 +259,22 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 		private static final long serialVersionUID = 1L;
 		
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			start(); 
+		public void actionPerformed(ActionEvent event) {
+			try {
+				start();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				System.err.println();
+				System.err.println("=== EXCEPTION SUMMARY ===");
+				System.err.println(e);
+				JOptionPane.showMessageDialog(
+					null,
+					e.getClass().getSimpleName() + ": " + e.getMessage(),
+					e.getClass().getSimpleName(),
+					JOptionPane.ERROR_MESSAGE
+				);
+			} 
 		}
 	};
 
@@ -486,7 +500,7 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 			System.err.println(e);
 			JOptionPane.showMessageDialog(
 				null,
-				e.getMessage(),
+				e.getClass().getSimpleName() + ": " + e.getMessage(),
 				e.getClass().getSimpleName(),
 				JOptionPane.ERROR_MESSAGE
 			);
@@ -666,7 +680,7 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 					language = l;
 					region = null;
 				}
-				return new User(i, "User ${i}", language, region);
+				return new User(i, i, "User " + i, language, region);
 			};
 		
 			/*** World Server ***/
@@ -884,7 +898,7 @@ public class ScriptDebugger extends JFrame implements DialogClient, TextInputLis
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(
 				null,
-				e.getMessage(),
+				e.getClass().getSimpleName() + ": " + e.getMessage(),
 				e.getClass().getSimpleName(),
 				JOptionPane.ERROR_MESSAGE
 			);
